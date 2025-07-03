@@ -32,6 +32,8 @@
 
 LangConnect Client is a modern, Next.js-based GUI interface for managing vector databases powered by PostgreSQL with pgvector extension. It provides an intuitive web interface for document management, vector search capabilities, and seamless integration with AI assistants through the Model Context Protocol (MCP).
 
+This project was inspired by [langchain-ai/langconnect](https://github.com/langchain-ai/langconnect).
+
 ## ✨ Main Features
 
 ### 📚 **Collection Management**
@@ -101,8 +103,8 @@ LangConnect Client is a modern, Next.js-based GUI interface for managing vector 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/langconnect.git
-   cd langconnect
+   git clone https://github.com/teddynote-lab/langconnect-client.git
+   cd langconnect-client
    ```
 
 2. **Set up environment variables**
@@ -250,28 +252,6 @@ In the Inspector:
 | `POSTGRES_DB` | PostgreSQL database name | No |
 | `SSE_PORT` | MCP SSE server port (default: 8765) | No |
 
-## 📚 API Documentation
-
-The API provides comprehensive endpoints for document and collection management:
-
-### Authentication
-- `POST /auth/signup` - Create new account
-- `POST /auth/signin` - Sign in
-- `POST /auth/refresh` - Refresh token
-- `GET /auth/me` - Get current user
-
-### Collections
-- `GET /collections` - List collections
-- `POST /collections` - Create collection
-- `GET /collections/{id}` - Get collection
-- `PUT /collections/{id}` - Update collection
-- `DELETE /collections/{id}` - Delete collection
-
-### Documents
-- `GET /collections/{id}/documents` - List documents
-- `POST /collections/{id}/documents` - Upload documents
-- `DELETE /collections/{id}/documents` - Bulk delete
-- `POST /collections/{id}/documents/search` - Search documents
 
 ## 👥 Contributors
 
