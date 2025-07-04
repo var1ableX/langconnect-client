@@ -21,12 +21,12 @@ Enter your email and password when prompted. The script will:
 - Test the token
 - Display the access token for you to copy
 
-#### Option 2: From the Streamlit UI
+#### Option 2: From the Next.js UI
 
-1. **Sign in to the Streamlit UI** at http://localhost:8501
+1. **Sign in to the Next.js UI** at http://localhost:3000
 2. **Open Developer Tools** in your browser (F12)
 3. **Go to the Application/Storage tab**
-4. **Find Session Storage** for localhost:8501
+4. **Find Session Storage** for localhost:3000
 5. **Look for the `access_token` key**
 6. **Copy the JWT token value**
 
@@ -69,7 +69,7 @@ SUPABASE_JWT_SECRET=YOUR_JWT_TOKEN_HERE
 
 Supabase JWT tokens expire after a certain period (typically 1 hour). When your token expires:
 
-1. Sign in again through the Streamlit UI
+1. Sign in again through the Next.js UI
 2. Get the new access token
 3. Update your configuration with the new token
 

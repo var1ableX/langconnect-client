@@ -37,43 +37,30 @@ This project was inspired by [langchain-ai/langconnect](https://github.com/langc
 ## ✨ Main Features
 
 ### 📚 **Collection Management**
-- Create, read, update, and delete document collections
-- Organize documents with custom metadata
-- Real-time statistics for documents and chunks
-- Bulk operations support
+- CRUD operations with custom metadata support
+- Real-time statistics and bulk operations
 
 ### 📄 **Document Management**
 - Multi-format support (PDF, TXT, MD, DOCX, HTML)
-- Batch upload capabilities with drag-and-drop interface
 - Automatic text extraction and chunking
-- Document-level and chunk-level management
-- Metadata customization for enhanced searchability
+- Drag-and-drop batch upload
 
-### 🔍 **Advanced Search Capabilities**
-- **Semantic Search**: Vector similarity search using OpenAI embeddings
-- **Keyword Search**: Traditional full-text search
-- **Hybrid Search**: Combines semantic and keyword search for best results
-- Metadata filtering with JSON support
-- Real-time search results with relevance scores
+### 🔍 **Advanced Search**
+- **Semantic**: Vector similarity search with OpenAI embeddings
+- **Keyword**: PostgreSQL full-text search
+- **Hybrid**: Combined search with configurable weights
 
-### 🔐 **Authentication & Security**
-- Supabase integration for secure user authentication
-- JWT-based API access
-- Session persistence
+### 🔐 **Authentication**
+- Supabase JWT authentication
 - Role-based access control
 
-### 🤖 **MCP (Model Context Protocol) Integration**
-- Direct integration with AI assistants (Claude Desktop, Cursor)
-- 9 comprehensive tools for document management
-- Both stdio and SSE transport support
-- Automated configuration generation
+### 🤖 **MCP Integration**
+- 9+ tools for AI assistants (Claude, Cursor)
+- stdio and SSE transport support
 
-### 🎨 **Modern UI/UX**
-- Responsive design with Tailwind CSS
-- Dark/Light theme support
-- Multi-language support (English, Korean)
-- Real-time updates and notifications
-- Interactive API testing interface
+### 🎨 **Modern UI**
+- Next.js with Tailwind CSS
+- Dark/Light themes, Multi-language (EN/KO)
 
 ## 🏗️ Architecture
 
@@ -91,6 +78,21 @@ This project was inspired by [langchain-ai/langconnect](https://github.com/langc
 ```
 
 ## 🚀 Getting Started
+
+### Quick Start
+
+```bash
+# Clone and setup
+git clone https://github.com/teddynote-lab/langconnect-client.git
+cd langconnect-client
+cp .env.example .env
+
+# Edit .env with your credentials, then:
+make build   # Build Docker images
+make up      # Start all services
+make mcp     # Create MCP configuration
+make down    # Stop services
+```
 
 ### Prerequisites
 
@@ -124,28 +126,18 @@ This project was inspired by [langchain-ai/langconnect](https://github.com/langc
    ```env
    SUPABASE_URL=https://your-project.supabase.co
    SUPABASE_KEY=your-anon-public-key
-   
-   # Also update these for Next.js
-   NEXTAUTH_SECRET=your-secret-key-here
-   NEXTAUTH_URL=http://localhost:3000
-   NEXT_PUBLIC_API_URL=http://localhost:8080
    ```
 
 4. **Build the application**
    ```bash
-   ./install.sh
+   make build
    ```
-   
-   This script will:
-   - Install frontend dependencies using pnpm
-   - Build the Next.js application
-   - Build all Docker images
 
 ### Running the Application
 
 1. **Start all services**
    ```bash
-   docker compose up -d
+   make up
    ```
 
 2. **Access the services**
@@ -155,7 +147,12 @@ This project was inspired by [langchain-ai/langconnect](https://github.com/langc
 
 3. **Stop services**
    ```bash
-   docker compose down
+   make down
+   ```
+
+4. **View logs**
+   ```bash
+   make logs
    ```
 
 ## 🤖 MCP Integration
@@ -164,7 +161,7 @@ This project was inspired by [langchain-ai/langconnect](https://github.com/langc
 
 1. **Generate MCP configuration**
    ```bash
-   uv run python mcp/create_mcp_json.py
+   make mcp
    ```
    
    This command will:
@@ -266,8 +263,6 @@ In the Inspector:
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
 
 <div align="center">
 Made with ❤️ by <a href="https://github.com/teddynote-lab">TeddyNote LAB</a>
