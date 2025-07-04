@@ -17,13 +17,13 @@ RUN pip install --no-cache-dir uv
 
 WORKDIR /app
 
-# Copy dependency files and README (required by pyproject.toml)
-COPY pyproject.toml uv.lock README.md ./
+# Copy dependency files
+COPY requirements.txt ./
 
 # Create virtual environment and install dependencies
 RUN uv venv && \
-    uv sync --frozen && \
-    uv pip install streamlit "unstructured[docx]"
+    uv pip install -r requirements.txt && \
+    uv pip install "unstructured[docx]"
 
 # Final stage
 FROM python:3.11-slim
