@@ -263,6 +263,34 @@ In the Inspector:
   </tr>
 </table>
 
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/jikime">
+          <img src="https://avatars.githubusercontent.com/u/9925165?v=4" width="100px;" alt="jikime"/>
+          <br />
+          <sub><b>jikime</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/jikime/your-repo-name/commits?author=jikime" title="Code">💻</a>
+        <a href="https://github.com/jikime/your-repo-name/pulls?q=is%3Apr+author%3Ajikime" title="Pull Requests">💪</a>
+      </td>
+      <td valign="top">
+        <strong>주요 기여</strong>
+        <ul>
+          <li>Next-Connect-UI 개발</li>
+        </ul>
+        <strong>커뮤니티</strong>
+        <ul>
+          <li><a href="https://www.facebook.com/groups/1183007433518603">페이스북 그룹 운영</a></li>
+        </ul>
+      </td>
+    </tr>
+    </tbody>
+</table>
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
