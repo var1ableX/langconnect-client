@@ -2,6 +2,12 @@
 
 <div align="center">
 
+[English README](./README.md) | [한국어 README](./README_ko.md)
+
+</div>
+
+<div align="center">
+
 ![Next.js](https://img.shields.io/badge/Next.js-15.3.4-black?style=for-the-badge&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)
@@ -232,7 +238,7 @@ npx @modelcontextprotocol/inspector
 
 In the Inspector:
 1. Select "SSE" as transport type
-2. Enter `http://localhost:8765` as URL
+2. Enter `http://localhost:8765/sse` as URL
 3. Connect and test the available tools
 
 ## 🔧 Environment Variables
@@ -256,17 +262,26 @@ In the Inspector:
 ## 👥 Contributors
 
 <table>
-  <tr>
-    <td align="center"><a href="https://github.com/teddylee777"><img src="https://avatars.githubusercontent.com/u/10074379?s=400&u=ee37ac1a4bb730df9c80d1ac92311cbbf61c680e&v=4" width="100px;" alt=""/><br /><sub><b>Teddy Lee</b></sub></a><br /><a href="https://teddylee777.github.io/" title="Code">🏠</a></td>
-    <td align="center"><a href="https://github.com/fbwndrud"><img src="https://avatars.githubusercontent.com/u/50973794?v=4" width="100px;" alt=""/><br /><sub><b>fbwndrud</b></sub></a><br /><a href="https://github.com/fbwndrud" title="Code">🏠</a></td>
-    <td align="center"><a href="https://github.com/jikime"><img src="https://avatars.githubusercontent.com/u/9925165?v=4" width="100px;" alt=""/><br /><sub><b>jikime</b></sub></a><br /><a href="https://github.com/jikime" title="Code">🏠</a></td>
-  </tr>
-</table>
-
-
-<table>
   <tbody>
     <tr>
+      <td align="center">
+        <a href="https://github.com/teddylee777">
+          <img src="https://avatars.githubusercontent.com/u/10074379?s=400&u=ee37ac1a4bb730df9c80d1ac92311cbbf61c680e&v=4" width="100px;" alt="Teddy Lee"/>
+          <br />
+          <sub><b>Teddy Lee</b></sub>
+        </a>
+        <br />
+        <a href="https://teddylee777.github.io/" title="Portfolio">🏠</a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/fbwndrud">
+          <img src="https://avatars.githubusercontent.com/u/50973794?v=4" width="100px;" alt="fbwndrud"/>
+          <br />
+          <sub><b>fbwndrud</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/fbwndrud" title="GitHub">🏠</a>
+      </td>
       <td align="center" valign="top" width="14.28%">
         <a href="https://github.com/jikime">
           <img src="https://avatars.githubusercontent.com/u/9925165?v=4" width="100px;" alt="jikime"/>
@@ -278,17 +293,17 @@ In the Inspector:
         <a href="https://github.com/jikime/your-repo-name/pulls?q=is%3Apr+author%3Ajikime" title="Pull Requests">💪</a>
       </td>
       <td valign="top">
-        <strong>주요 기여</strong>
+        <strong>Key Contributions</strong>
         <ul>
-          <li>Next-Connect-UI 개발</li>
+          <li>Next-Connect-UI Development</li>
         </ul>
-        <strong>커뮤니티</strong>
+        <strong>Community</strong>
         <ul>
-          <li><a href="https://www.facebook.com/groups/1183007433518603">페이스북 그룹 운영</a></li>
+          <li><a href="https://www.facebook.com/groups/1183007433518603">Vibe Coding KR Facebook Group</a></li>
         </ul>
       </td>
     </tr>
-    </tbody>
+  </tbody>
 </table>
 
 ## 📄 License
