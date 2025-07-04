@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""LangConnect MCP Server using FastMCP (stdio)
-"""
+"""LangConnect MCP Server using FastMCP (stdio)"""
 
 import json
 import os
@@ -186,7 +185,7 @@ async def add_documents(collection_id: str, text: str) -> str:
             headers=headers,
             files=files,
             data=data,
-            timeout=60.0,
+            timeout=120.0,
         )
         response.raise_for_status()
         result = response.json()

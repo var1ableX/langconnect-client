@@ -66,8 +66,8 @@ ENV PATH="/app/.venv/bin:$PATH" \
 # Switch to non-root user
 USER langconnect
 
-# Expose ports for API, Streamlit, and MCP server
-EXPOSE 8080 8501 8765
+# Expose ports for API and MCP server
+EXPOSE 8080 8765
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
