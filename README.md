@@ -286,8 +286,8 @@ In the Inspector:
           <sub><b>jikime</b></sub>
         </a>
         <br />
-        <a href="https://github.com/jikime/your-repo-name/commits?author=jikime" title="Code">💻</a>
-        <a href="https://github.com/jikime/your-repo-name/pulls?q=is%3Apr+author%3Ajikime" title="Pull Requests">💪</a>
+        <a href="https://github.com/jikime/next-connect-ui/commits?author=jikime" title="Code">💻</a>
+        <a href="https://github.com/jikime/next-connect-ui/pulls?q=is%3Apr+author%3Ajikime" title="Pull Requests">💪</a>
       </td>
       <td valign="top">
         <strong>Key Contributions</strong>
