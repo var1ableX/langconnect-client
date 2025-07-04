@@ -43,43 +43,30 @@ LangConnect Client는 pgvector 확장이 포함된 PostgreSQL로 구동되는 �
 ## ✨ 주요 기능
 
 ### 📚 **컬렉션 관리**
-- 문서 컬렉션 생성, 읽기, 업데이트, 삭제
-- 사용자 정의 메타데이터로 문서 정리
-- 문서 및 청크에 대한 실시간 통계
-- 대량 작업 지원
+- 사용자 정의 메타데이터 지원을 통한 CRUD 작업
+- 실시간 통계 및 대량 작업
 
 ### 📄 **문서 관리**
 - 다중 형식 지원 (PDF, TXT, MD, DOCX, HTML)
-- 드래그 앤 드롭 인터페이스를 통한 일괄 업로드 기능
 - 자동 텍스트 추출 및 청킹
-- 문서 레벨 및 청크 레벨 관리
-- 향상된 검색 기능을 위한 메타데이터 커스터마이징
+- 드래그 앤 드롭 배치 업로드
 
-### 🔍 **고급 검색 기능**
+### 🔍 **고급 검색**
 - **의미적 검색**: OpenAI 임베딩을 사용한 벡터 유사성 검색
-- **키워드 검색**: 전통적인 전체 텍스트 검색
-- **하이브리드 검색**: 최상의 결과를 위한 의미적 검색과 키워드 검색 결합
-- JSON 지원을 통한 메타데이터 필터링
-- 관련성 점수를 포함한 실시간 검색 결과
+- **키워드 검색**: PostgreSQL 전체 텍스트 검색
+- **하이브리드 검색**: 구성 가능한 가중치를 통한 통합 검색
 
-### 🔐 **인증 및 보안**
-- 안전한 사용자 인증을 위한 Supabase 통합
-- JWT 기반 API 액세스
-- 세션 지속성
+### 🔐 **인증**
+- Supabase JWT 인증
 - 역할 기반 액세스 제어
 
-### 🤖 **MCP (Model Context Protocol) 통합**
-- AI 어시스턴트(Claude Desktop, Cursor)와의 직접 통합
-- 문서 관리를 위한 9개의 포괄적인 도구
+### 🤖 **MCP 통합**
+- AI 어시스턴트(Claude, Cursor)를 위한 9개 이상의 도구
 - stdio 및 SSE 전송 지원
-- 자동 구성 생성
 
-### 🎨 **현대적인 UI/UX**
-- Tailwind CSS를 사용한 반응형 디자인
-- 다크/라이트 테마 지원
-- 다국어 지원 (영어, 한국어)
-- 실시간 업데이트 및 알림
-- 인터랙티브 API 테스트 인터페이스
+### 🎨 **현대적인 UI**
+- Tailwind CSS가 포함된 Next.js
+- 다크/라이트 테마, 다국어 지원 (영어/한국어)
 
 ## 🏗️ 아키텍처
 ```
@@ -96,6 +83,21 @@ LangConnect Client는 pgvector 확장이 포함된 PostgreSQL로 구동되는 �
 ```
 
 ## 🚀 시작하기
+
+### 빠른 시작
+
+```bash
+# 클론 및 설정
+git clone https://github.com/teddynote-lab/langconnect-client.git
+cd langconnect-client
+cp .env.example .env
+
+# 자격 증명으로 .env 편집 후:
+make build   # Docker 이미지 빌드
+make up      # 모든 서비스 시작
+make mcp     # MCP 구성 생성
+make down    # 서비스 중지
+```
 
 ### 필수 요구사항
 
@@ -129,28 +131,18 @@ LangConnect Client는 pgvector 확장이 포함된 PostgreSQL로 구동되는 �
    ```env
    SUPABASE_URL=https://your-project.supabase.co
    SUPABASE_KEY=your-anon-public-key
-   
-   # Next.js용으로도 업데이트
-   NEXTAUTH_SECRET=your-secret-key-here
-   NEXTAUTH_URL=http://localhost:3000
-   NEXT_PUBLIC_API_URL=http://localhost:8080
    ```
 
 4. **애플리케이션 빌드**
    ```bash
-   ./install.sh
+   make build
    ```
-   
-   이 스크립트는 다음을 수행합니다:
-   - pnpm을 사용하여 프론트엔드 종속성 설치
-   - Next.js 애플리케이션 빌드
-   - 모든 Docker 이미지 빌드
 
 ### 애플리케이션 실행
 
 1. **모든 서비스 시작**
    ```bash
-   docker compose up -d
+   make up
    ```
 
 2. **서비스 액세스**
@@ -160,7 +152,12 @@ LangConnect Client는 pgvector 확장이 포함된 PostgreSQL로 구동되는 �
 
 3. **서비스 중지**
    ```bash
-   docker compose down
+   make down
+   ```
+
+4. **로그 보기**
+   ```bash
+   make logs
    ```
 
 ## 🤖 MCP 통합
@@ -169,7 +166,7 @@ LangConnect Client는 pgvector 확장이 포함된 PostgreSQL로 구동되는 �
 
 1. **MCP 구성 생성**
    ```bash
-   uv run python mcp/create_mcp_json.py
+   make mcp
    ```
    
    이 명령은 다음을 수행합니다:
@@ -243,7 +240,7 @@ Inspector에서:
 ## 🔧 환경 변수
 
 | 변수 | 설명 | 필수 |
-|------|------|------|
+|----------|-------------|----------|
 | `OPENAI_API_KEY` | 임베딩용 OpenAI API 키 | 예 |
 | `SUPABASE_URL` | Supabase 프로젝트 URL | 예 |
 | `SUPABASE_KEY` | Supabase anon public 키 | 예 |
@@ -308,7 +305,6 @@ Inspector에서:
 
 이 프로젝트는 MIT 라이선스에 따라 라이선스가 부여됩니다 - 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 
----
-
 <div align="center">
-<a href="https://github.com/teddynote-lab">TeddyNote LAB</a>에서 ❤️로 만들어졌습니다 
+<a href="https://github.com/teddynote-lab">TeddyNote LAB</a>에서 ❤️로 만들어졌습니다
+</div> 
