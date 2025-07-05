@@ -1,4 +1,4 @@
-.PHONY: build up down restart test
+.PHONY: build up down restart mcp test
 
 build:
 	@echo "🔨 Building Next.js application..."
@@ -30,6 +30,11 @@ restart:
 	@docker-compose down
 	@docker-compose up -d
 	@echo "✅ Server restarted successfully!"
+
+mcp:
+	@echo "🔧 Creating MCP configuration..."
+	@uv run python mcp/create_mcp_json.py
+	@echo "✅ MCP configuration created successfully!"
 
 TEST_FILE ?= tests/unit_tests
 
