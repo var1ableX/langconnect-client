@@ -30,7 +30,6 @@
   - [애플리케이션 실행](#애플리케이션-실행)
 - [MCP 통합](#mcp-통합)
 - [환경 변수](#환경-변수)
-- [API 문서](#api-문서)
 - [기여자](#기여자)
 - [라이선스](#라이선스)
 
@@ -307,4 +306,4 @@ Inspector에서:
 
 <div align="center">
 <a href="https://github.com/teddynote-lab">TeddyNote LAB</a>에서 ❤️로 만들어졌습니다
-</div> 
+</div>
