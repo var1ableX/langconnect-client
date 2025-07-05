@@ -15,7 +15,9 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115.6+-009688?style=for-the-badge&logo=fastapi)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql)
 
-**A Modern GUI Interface for Vector Database Management**
+**A GUI Interface for Vector Database Management**
+
+![frontend](./assets/frontend.png)
 
 </div>
 
@@ -70,18 +72,7 @@ This project was inspired by [langchain-ai/langconnect](https://github.com/langc
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│   Next.js Frontend  │────▶│  FastAPI Backend │────▶│   PostgreSQL    │
-│   (Port 3000)       │     │  (Port 8080)     │     │   + pgvector    │
-└─────────────────────┘     └──────────────────┘     └─────────────────┘
-         │                           │
-         └───────────┬───────────────┘
-                     │
-              ┌──────▼──────────┐
-              │ Supabase Auth   │
-              └─────────────────┘
-```
+![Overall Architecture](./assets/structure.png)
 
 ## 🚀 Getting Started
 
@@ -96,8 +87,18 @@ cp .env.example .env
 # Edit .env with your credentials, then:
 make build   # Build Docker images
 make up      # Start all services
-make mcp     # Create MCP configuration
-make down    # Stop services
+```
+
+Create MCP configuration
+
+```bash
+make mcp
+```
+
+Stop services
+
+```bash
+make down
 ```
 
 ### Prerequisites
