@@ -4,16 +4,8 @@ import { serverFetchAPI } from "./api"
 
 const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 
-// Define the Token interface
-interface Token {
-  refreshToken: string;
-  accessToken?: string;
-  accessTokenExpires?: number;
-  error?: string;
-}
-
 // Helper function to refresh access token
-export async function refreshAccessToken(token: Token) {
+export async function refreshAccessToken(token: any) {
   try {
     const response = await fetch(`${API_URL}/auth/refresh`, {
       method: 'POST',

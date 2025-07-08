@@ -1,5 +1,5 @@
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "./use-translation";
 
 // 회원가입 요청 타입 정의
