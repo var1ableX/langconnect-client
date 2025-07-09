@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-import mcp.mcp_server as mcp_mod
+import mcpserver.mcp_server as mcp_mod
 
 pytestmark = pytest.mark.asyncio
 

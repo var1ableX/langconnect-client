@@ -12,7 +12,7 @@ Both MCP servers use Supabase JWT authentication. You need to provide a valid ac
 
 Run the provided helper script:
 ```bash
-cd mcp
+cd mcpserver
 python get_access_token.py
 ```
 

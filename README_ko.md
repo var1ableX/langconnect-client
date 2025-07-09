@@ -199,12 +199,12 @@ make down
    - Supabase 자격 증명 입력 요청
    - 자동으로 액세스 토큰 획득
    - 토큰으로 `.env` 업데이트
-   - `mcp/mcp_config.json` 생성
+   - `mcpserver/mcp_config.json` 생성
 
 2. **AI 어시스턴트와 통합**
 
    **Claude Desktop용:**
-   - `mcp/mcp_config.json`의 내용 복사
+   - `mcpserver/mcp_config.json`의 내용 복사
    - Claude Desktop의 MCP 설정에 붙여넣기
 
    **Cursor용:**
@@ -280,7 +280,7 @@ Follow the guidelines step-by-step to find the answer.
 
 ```bash
 # 또는 직접 실행
-uv run python mcp/mcp_sse_server.py
+uv run python mcpserver/mcp_sse_server.py
 ```
 
 서버에는 이제 자동 인증이 포함됩니다:

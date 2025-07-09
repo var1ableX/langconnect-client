@@ -200,12 +200,12 @@ make down
    - Prompt for your Supabase credentials
    - Automatically obtain an access token
    - Update `.env` with the token
-   - Generate `mcp/mcp_config.json`
+   - Generate `mcpserver/mcp_config.json`
 
 2. **Integration with AI Assistants**
 
    **For Claude Desktop:**
-   - Copy the contents of `mcp/mcp_config.json`
+   - Copy the contents of `mcpserver/mcp_config.json`
    - Paste into Claude Desktop's MCP settings
 
    **For Cursor:**
@@ -281,7 +281,7 @@ This script will:
 
 ```bash
 # Or run directly
-uv run python mcp/mcp_sse_server.py
+uv run python mcpserver/mcp_sse_server.py
 ```
 
 The server now includes automatic authentication:

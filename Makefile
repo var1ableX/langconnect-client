@@ -33,7 +33,7 @@ restart:
 
 mcp:
 	@echo "🔧 Creating MCP configuration..."
-	@uv run python mcp/create_mcp_json.py
+	@uv run python mcpserver/create_mcp_json.py
 	@echo "✅ MCP configuration created successfully!"
 
 TEST_FILE ?= tests/unit_tests
