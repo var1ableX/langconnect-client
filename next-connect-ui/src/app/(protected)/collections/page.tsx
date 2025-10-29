@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { RefreshCw, Plus, Trash2, Folder, FileText, Loader2, Database, FolderOpen, Archive, BookOpen, Info, X } from 'lucide-react'
+import { RefreshCw, Plus, Trash2, Folder, FileText, Loader2, Database, FolderOpen, Archive, BookOpen, Info, X, Pencil } from 'lucide-react'
 import { CollectionWithStats, Collection } from '@/types/collection'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -21,6 +21,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { CreateCollectionModal } from '@/components/modals/create-collection-modal'
+import { EditCollectionModal } from '@/components/modals/edit-collection-modal'
 import { useTranslation } from '@/hooks/use-translation'
 
 export default function CollectionsPage() {
@@ -32,6 +33,10 @@ export default function CollectionsPage() {
   // Create modal state
   const [showCreateModal, setShowCreateModal] = useState(false)
   
+  // Edit modal state
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [editingCollection, setEditingCollection] = useState<Collection | null>(null)
+
   // Selection states
   const [selectedCollections, setSelectedCollections] = useState<string[]>([])
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
@@ -77,6 +82,11 @@ export default function CollectionsPage() {
   const handleRefresh = () => {
     setRefreshing(true)
     fetchCollections()
+  }
+
+  const handleEdit = (collection: Collection) => {
+    setEditingCollection(collection)
+    setShowEditModal(true)
   }
 
   const togglePopover = (collectionId: string, isOpen: boolean) => {
@@ -377,6 +387,9 @@ export default function CollectionsPage() {
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                           {t('collections.table.metadata')}
                         </th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                          {t('collections.table.actions')}
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -511,6 +524,15 @@ export default function CollectionsPage() {
                               )}
                             </div>
                           </td>
+                          <td className="px-4 py-4">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEdit(collection)}
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -527,6 +549,14 @@ export default function CollectionsPage() {
         open={showCreateModal}
         onOpenChange={setShowCreateModal}
         onSuccess={fetchCollections}
+      />
+
+      {/* Edit Collection Modal */}
+      <EditCollectionModal
+        open={showEditModal}
+        onOpenChange={setShowEditModal}
+        onSuccess={fetchCollections}
+        collection={editingCollection}
       />
     </div>
   )

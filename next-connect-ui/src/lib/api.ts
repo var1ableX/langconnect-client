@@ -82,3 +82,27 @@ export async function uploadFormData<T = any>(endpoint: string, formData: FormDa
   })
 }
 
+export async function updateCollection(
+  uuid: string,
+  metadata: object,
+  token: string
+) {
+  return await api.patch(`/collections/${uuid}`, {
+    body: JSON.stringify({
+      metadata,
+    }),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+}
+
+export async function deleteCollection(uuid: string, token: string) {
+  return await api.delete(`/collections/${uuid}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
+
