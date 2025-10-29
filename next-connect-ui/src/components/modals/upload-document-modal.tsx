@@ -130,10 +130,17 @@ export function UploadDocumentModal({
         formData.append('files', file)
       })
       
+      // Parse metadata and add the collection field for open-agent-platform compatibility
+      const metadata = JSON.parse(values.metadata)
+      const metadataWithCollection = metadata.map((meta: any) => ({
+        ...meta,
+        collection: values.collectionId  // Required by open-agent-platform for filtering
+      }))
+      
       // Add other data
       formData.append('chunk_size', values.chunkSize.toString())
       formData.append('chunk_overlap', values.chunkOverlap.toString())
-      formData.append('metadatas_json', values.metadata)
+      formData.append('metadatas_json', JSON.stringify(metadataWithCollection))
 
       const response = await fetch(`/api/collections/${values.collectionId}/documents`, {
         method: 'POST',
@@ -343,7 +350,7 @@ export function UploadDocumentModal({
                         {...field}
                         rows={6}
                         className="font-mono text-sm"
-                        placeholder='[{"name": "filename.pdf", "source": "filename.pdf", "timestamp": "2024-01-01T00:00:00.000Z", "created_at": "2024-01-01T00:00:00.000Z", "size": "1.5 MB"}]'
+                        placeholder='Note: collection field will be added automatically'
                       />
                     </FormControl>
                     <FormDescription className="text-gray-500 dark:text-gray-400">
