@@ -83,8 +83,11 @@ export function UploadDocumentModal({
     // Auto-generate metadata for new files
     const currentMetadata = JSON.parse(form.getValues("metadata") || "[]")
     const newMetadata = acceptedFiles.map(file => ({
-      source: file.name,
-      timestamp: new Date().toISOString()
+      name: file.name,              // For compatibility with open-agent-platform
+      source: file.name,             // For langconnect-client
+      timestamp: new Date().toISOString(),    // For langconnect-client
+      created_at: new Date().toISOString(),   // For compatibility with open-agent-platform
+      size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`  // For compatibility with open-agent-platform
     }))
     
     form.setValue("metadata", JSON.stringify([...currentMetadata, ...newMetadata], null, 2))
@@ -340,7 +343,7 @@ export function UploadDocumentModal({
                         {...field}
                         rows={6}
                         className="font-mono text-sm"
-                        placeholder='[{"source": "filename.pdf", "timestamp": "2024-01-01T00:00:00.000Z"}]'
+                        placeholder='[{"name": "filename.pdf", "source": "filename.pdf", "timestamp": "2024-01-01T00:00:00.000Z", "created_at": "2024-01-01T00:00:00.000Z", "size": "1.5 MB"}]'
                       />
                     </FormControl>
                     <FormDescription className="text-gray-500 dark:text-gray-400">

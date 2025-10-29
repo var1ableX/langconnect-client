@@ -2,15 +2,15 @@ import { NextResponse } from "next/server"
 import { serverFetchAPI } from "@/lib/api"
 import { uploadFormData } from "@/lib/api"
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
+export async function GET(request: Request, { params }: { params: Promise<{ collectionId: string }> }) {
+  const { collectionId } = await params
   const { searchParams } = new URL(request.url)
   const limit = searchParams.get('limit') || '10'
   const offset = searchParams.get('offset') || '0'
     
   try {
     // 백엔드 API 호출 with query parameters
-    const response = await serverFetchAPI(`/collections/${id}/documents?limit=${limit}&offset=${offset}`, {
+    const response = await serverFetchAPI(`/collections/${collectionId}/documents?limit=${limit}&offset=${offset}`, {
       method: "GET",
     })
 
@@ -20,15 +20,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   }
 }
 
-export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
+export async function POST(request: Request, { params }: { params: Promise<{ collectionId: string }> }) {
+  const { collectionId } = await params
   
   try {
     // FormData를 받아서 axios로 백엔드에 전달
     const formData = await request.formData()
     
     // Use the Axios function to upload FormData
-    const response = await uploadFormData(`/collections/${id}/documents`, formData)
+    const response = await uploadFormData(`/collections/${collectionId}/documents`, formData)
 
     return NextResponse.json({ success: true, data: response }, { status: 201 })
   } catch (error: any) {
@@ -41,9 +41,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
 export async function DELETE(
   request: Request, 
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ collectionId: string }> }
 ) {
-  const { id } = await params
+  const { collectionId } = await params
   
   try {
     const body = await request.json()
@@ -56,7 +56,7 @@ export async function DELETE(
       }, { status: 400 })
     }
     
-    const response = await serverFetchAPI(`/collections/${id}/documents`, {
+    const response = await serverFetchAPI(`/collections/${collectionId}/documents`, {
       method: "DELETE",
       body: JSON.stringify(body),
     })

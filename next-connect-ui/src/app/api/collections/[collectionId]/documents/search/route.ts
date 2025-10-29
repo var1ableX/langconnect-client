@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server"
 import { serverFetchAPI } from "@/lib/api"
 
-export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
+export async function POST(request: Request, { params }: { params: Promise<{ collectionId: string }> }) {
+  const { collectionId } = await params
   
   try {
     const body = await request.json()
     
-    const response = await serverFetchAPI(`/collections/${id}/documents/search`, {
+    const response = await serverFetchAPI(`/collections/${collectionId}/documents/search`, {
       method: "POST",
       body: JSON.stringify(body),
     })

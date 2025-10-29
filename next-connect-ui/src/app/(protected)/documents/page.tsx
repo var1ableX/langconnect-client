@@ -133,7 +133,8 @@ export default function DocumentsPage() {
       allDocuments.forEach(doc => {
         const metadata = doc.metadata || {}
         const file_id = metadata.file_id || 'N/A'
-        const source = metadata.source || 'N/A'
+        // Check both 'source' (langconnect-client) and 'name' (open-agent-platform) fields
+        const source = metadata.source || metadata.name || 'N/A'
         sources.add(source)
         
         if (!sourceGroups[file_id]) {
@@ -141,7 +142,8 @@ export default function DocumentsPage() {
             source,
             file_id,
             chunks: [],
-            timestamp: metadata.timestamp || 'N/A',
+            // Check both 'timestamp' (langconnect-client) and 'created_at' (open-agent-platform) fields
+            timestamp: metadata.timestamp || metadata.created_at || 'N/A',
             total_chars: 0
           }
         }
@@ -272,9 +274,11 @@ export default function DocumentsPage() {
     selectedSources.includes(group.source)
   )
   
-  const filteredDocuments = documents.filter(doc => 
-    selectedSources.includes(doc.metadata?.source || 'N/A')
-  )
+  const filteredDocuments = documents.filter(doc => {
+    // Check both 'source' (langconnect-client) and 'name' (open-agent-platform) fields
+    const source = doc.metadata?.source || doc.metadata?.name || 'N/A'
+    return selectedSources.includes(source)
+  })
   
   // Pagination logic
   const totalPages = Math.ceil(
@@ -974,10 +978,10 @@ export default function DocumentsPage() {
                                                     </code>
                                                   </div>
                                                 )}
-                                                {doc.metadata?.source && (
+                                                {(doc.metadata?.source || doc.metadata?.name) && (
                                                   <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
                                                     <span className="font-medium">Source:</span>
-                                                    <span className="text-gray-700 dark:text-gray-300">{doc.metadata.source}</span>
+                                                    <span className="text-gray-700 dark:text-gray-300">{doc.metadata.source || doc.metadata.name}</span>
                                                   </div>
                                                 )}
                                               </div>
@@ -1039,12 +1043,14 @@ export default function DocumentsPage() {
                               </td>
                               <td className="px-4 py-4">
                                 <div className="text-sm text-gray-500 dark:text-gray-300">
-                                  {doc.metadata?.source || 'N/A'}
+                                  {doc.metadata?.source || doc.metadata?.name || 'N/A'}
                                 </div>
                               </td>
                               <td className="px-4 py-4">
                                 <div className="text-xs text-gray-500 dark:text-gray-300">
-                                  {doc.metadata?.timestamp ? new Date(doc.metadata.timestamp).toLocaleString() : 'N/A'}
+                                  {doc.metadata?.timestamp || doc.metadata?.created_at 
+                                    ? new Date(doc.metadata.timestamp || doc.metadata.created_at).toLocaleString() 
+                                    : 'N/A'}
                                 </div>
                               </td>
                             </tr>

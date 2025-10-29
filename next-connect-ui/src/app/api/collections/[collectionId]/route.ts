@@ -1,79 +1,43 @@
-import {
-  deleteCollection,
-  getCollections,
-  createCollection,
-  updateCollection,
-} from "@/lib/api"
-import {
-  validateSession,
-  NextResponse,
-} from "@/lib/utils"
+import { NextResponse } from "next/server"
+import { serverFetchAPI } from "@/lib/api"
 
-export async function GET(
-  req: Request,
-  { params }: { params: { collectionId: string } }
-) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ collectionId: string }> }) {
   try {
-    const { user, error } = await validateSession(req)
-    if (error || !user) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
-      )
-    }
+    const { collectionId } = await params
+    // 백엔드 API 호출 - returns 204 No Content on success
+    await serverFetchAPI(`/collections/${collectionId}`, {
+      method: "DELETE",
+    })
 
-    const response = await getCollections(user.token)
-    return NextResponse.json({ success: true, data: response })
-  } catch (error) {
-    console.error(`🔴 GET /api/collections failed: ${error}`)
-    return NextResponse.json({ success: false, message: error })
+    // Since backend returns 204 No Content, we create our own success response
+    return NextResponse.json({ success: true, message: 'Collection deleted successfully' }, { status: 200 })
+  } catch (error: any) {
+    console.error('Failed to delete collection:', error)
+    return NextResponse.json({ 
+      success: false, 
+      message: error.message || 'Failed to delete collection' 
+    }, { status: 500 })
   }
 }
 
-export async function POST(req: Request) {
-  try {
-    const { user, error } = await validateSession(req)
-    if (error || !user) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
-      )
-    }
-
-    const { name } = await req.json()
-    const response = await createCollection(name, user.token)
-    return NextResponse.json({ success: true, data: response })
-  } catch (error) {
-    console.error(`🔴 POST /api/collections failed: ${error}`)
-    return NextResponse.json({ success: false, message: error })
-  }
+export async function GET(request: Request, { params }: { params: Promise<{ collectionId: string }> }) {
+  const { collectionId } = await params
+  const response = await serverFetchAPI(`/collections/${collectionId}`, {
+    method: "GET",
+  })
+  return NextResponse.json({ success: true, data: response }, { status: 200 })
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { collectionId: string } }
-) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ collectionId: string }> }) {
   try {
-    const { user, error } = await validateSession(req)
-    if (error || !user) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
-      )
-    }
-
-    const { metadata } = await req.json()
-    const response = await updateCollection(
-      params.collectionId,
-      metadata,
-      user.token
-    )
-
-    return NextResponse.json({ success: true, data: response })
-  } catch (error) {
-    console.error(
-      `🔴 PATCH /api/collections/${params.collectionId} failed: ${error}`
-    )
-    return NextResponse.json({ success: false, message: error })
+    const { collectionId } = await params
+    const body = await request.json()
+    const response = await serverFetchAPI(`/collections/${collectionId}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    })
+    return NextResponse.json({ success: true, data: response }, { status: 200 })
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 500 })
   }
 }
