@@ -6,12 +6,11 @@ export async function DELETE(
   { params }: { params: Promise<{ collectionId: string; documentId: string }> }
 ) {
   const { collectionId, documentId } = await params
-  const { searchParams } = new URL(request.url)
-  const deleteBy = searchParams.get('delete_by') || 'file_id'
   
   try {
     // Call backend API for deletion
-    const response = await serverFetchAPI(`/collections/${collectionId}/documents/${documentId}?delete_by=${deleteBy}`, {
+    // Note: The backend uses the documentId as the file_id internally
+    const response = await serverFetchAPI(`/collections/${collectionId}/documents/${documentId}`, {
       method: "DELETE",
     })
 

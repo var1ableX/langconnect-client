@@ -56,16 +56,31 @@ export async function DELETE(
       }, { status: 400 })
     }
     
-    const response = await serverFetchAPI(`/collections/${collectionId}/documents`, {
-      method: "DELETE",
-      body: JSON.stringify(body),
-    })
+    // The backend only supports deleting one document at a time
+    // So we need to delete each document individually
+    const idsToDelete = body.file_ids || body.document_ids
+    const deletePromises = idsToDelete.map((id: string) => 
+      serverFetchAPI(`/collections/${collectionId}/documents/${id}`, {
+        method: "DELETE",
+      })
+    )
+    
+    // Wait for all deletes to complete
+    const results = await Promise.allSettled(deletePromises)
+    
+    // Count successful deletions
+    const successCount = results.filter(r => r.status === 'fulfilled').length
+    const failedCount = results.filter(r => r.status === 'rejected').length
+    
+    if (failedCount > 0) {
+      console.warn(`${failedCount} document(s) failed to delete`)
+    }
 
-    // The backend returns the response directly with deleted_count
     return NextResponse.json({ 
       success: true, 
-      deleted_count: response.deleted_count || 0,
-      ...response 
+      deleted_count: successCount,
+      failed_count: failedCount,
+      message: `Successfully deleted ${successCount} document(s)${failedCount > 0 ? `, ${failedCount} failed` : ''}`
     }, { status: 200 })
   } catch (error: any) {
     console.error('Failed to delete documents:', error)
