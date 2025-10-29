@@ -1,10 +1,6 @@
 "use client"
 
-import {
-  ChevronsUpDown,
-  LogOut,
-} from "lucide-react"
-
+import { ChevronsUpDown, LogOut } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,25 +15,25 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { useSession } from "next-auth/react"
-import { useAuth } from "@/hooks/use-auth"
-import { useCallback } from "react"
+import { useAuth } from "@/providers/auth-provider"
+import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import { useTranslation } from "@/hooks/use-translation"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
-  const { data: session } = useSession()
-  const { logout } = useAuth()
+  const { user } = useAuth()
   const router = useRouter()
   const { t } = useTranslation()
+  const supabase = createClient()
 
-  const handleLogout = useCallback(async () => {
-    const result = await logout();
-    if (result.success) {
-      router.push('/signin');
-    }
-  }, [logout, router])
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    toast.success(t("common.logout"))
+    router.push("/signin")
+    router.refresh()
+  }
 
   return (
     <SidebarMenu>
@@ -49,7 +45,7 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground focus:outline-none focus-visible:ring-0"
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate text-md">{session?.user?.email}</span>
+                <span className="truncate text-md">{user?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -63,7 +59,7 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{session?.user?.name}</span>
+                  <span className="truncate font-medium">{user?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>

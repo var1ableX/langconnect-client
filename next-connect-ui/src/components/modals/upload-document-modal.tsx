@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Upload, FileText, Settings, Database, X } from "lucide-react"
 import { useDropzone } from "react-dropzone"
-import { useSession } from "next-auth/react"
+import { useAuth } from "@/providers/auth-provider"
+import { createClient } from "@/lib/supabase/client"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -45,7 +46,8 @@ export function UploadDocumentModal({
   const { t } = useTranslation()
   const [files, setFiles] = useState<File[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const { data: session } = useSession()
+  const { user } = useAuth()
+  const supabase = createClient()
 
   const formSchema = z.object({
     collectionId: z.string().min(1, {

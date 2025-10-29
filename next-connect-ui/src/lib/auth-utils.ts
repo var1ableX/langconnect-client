@@ -1,29 +1,40 @@
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
+import { createClient } from "@/lib/supabase/server"
 
-// 서버 컴포넌트에서 인증 상태 확인 및 세션 가져오기
-export async function getAuthSession() {
-  return await getServerSession(authOptions)
+// Get current user from Supabase
+export async function getCurrentUser() {
+  try {
+    const supabase = await createClient()
+    const { data: { user }, error } = await supabase.auth.getUser()
+    
+    if (error) {
+      console.error("[auth-utils] Error getting user:", error.message)
+      return null
+    }
+    
+    return user
+  } catch (error) {
+    console.error("[auth-utils] Exception getting current user:", error)
+    return null
+  }
 }
 
-// 인증이 필요한 서버 컴포넌트에서 사용
+// Require authentication - redirect to signin if not authenticated
 export async function requireAuth() {
-  const session = await getAuthSession()
+  const user = await getCurrentUser()
 
-  if (!session) {
+  if (!user) {
     redirect("/signin")
   }
 
-  return session
+  return user
 }
 
-// 비인증 상태가 필요한 서버 컴포넌트에서 사용 (로그인 페이지 등)
+// Require guest - redirect to home if already authenticated
 export async function requireGuest() {
-  const session = await getAuthSession()
+  const user = await getCurrentUser()
 
-  if (session) {
+  if (user) {
     redirect("/")
   }
 }
-

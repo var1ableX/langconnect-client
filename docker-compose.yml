@@ -1,92 +1,101 @@
 services:
-  postgres:
-    image: pgvector/pgvector:pg16
-    container_name: langconnect-postgres
-    restart: always
-    ports:
-      - "5432:5432"
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}  # More descriptive DB name
-      # Additional security settings
-      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      # Initialize scripts (optional)
-      - ./init-scripts:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    networks:
-      - langconnect-network
+  # ========================================
+  # Commented out - Using existing LangConnect backend
+  # ========================================
+  # postgres:
+  #   image: pgvector/pgvector:pg16
+  #   container_name: langconnect-postgres
+  #   restart: always
+  #   ports:
+  #     - "5432:5432"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB: ${POSTGRES_DB} # More descriptive DB name
+  #     # Additional security settings
+  #     POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #     # Initialize scripts (optional)
+  #     - ./init-scripts:/docker-entrypoint-initdb.d
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 30s
+  #   networks:
+  #     - langconnect-network
 
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: langconnect-api
-    restart: always
-    depends_on:
-      postgres:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    env_file:
-      - .env
-    environment:
-      # PostgreSQL connection settings
-      POSTGRES_HOST: postgres  # Use service name
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      # Additional settings
-      POSTGRES_SSLMODE: disable  # For development environment
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
-      # Allow all localhost origins
-      ALLOW_ORIGINS: '["http://localhost:3000", "http://localhost:8080", "http://localhost", "http://127.0.0.1:3000", "http://127.0.0.1:8080", "http://127.0.0.1"]'
-    volumes:
-      - ./langconnect:/app/langconnect
-    networks:
-      - langconnect-network
-      
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: langconnect-api
+  #   restart: always
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   ports:
+  #     - "8081:8080"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     # PostgreSQL connection settings
+  #     POSTGRES_HOST: postgres # Use service name
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     # Additional settings
+  #     POSTGRES_SSLMODE: disable # For development environment
+  #     DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+  #     # Allow all localhost origins
+  #     ALLOW_ORIGINS: '["http://localhost:3011", "http://localhost:8081", "http://localhost", "http://127.0.0.1:3011", "http://127.0.0.1:8081", "http://127.0.0.1"]'
+  #   volumes:
+  #     - ./langconnect:/app/langconnect
+  #   networks:
+  #     - langconnect-network
+
   nextjs:
     build:
       context: ./next-connect-ui
       dockerfile: Dockerfile
       args:
+        # Build-time API URL - will be overridden by runtime env vars
         NEXT_PUBLIC_API_URL: http://localhost:8080
-        NEXTAUTH_URL: http://localhost:3000
+        NEXTAUTH_URL: http://localhost:3011
         NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
     container_name: next-connect-ui
     restart: always
-    depends_on:
-      - api
+    # No depends_on - connecting to external LangConnect backend
     ports:
-      - "3000:3000"
+      - "3011:3000"
     env_file:
       - .env
     environment:
-      API_URL: http://api:8080
-      NEXTAUTH_URL: http://localhost:3000
+      # Point to your existing LangConnect backend on localhost:8080
+      # Use host.docker.internal to access host services from container
+      API_URL: http://host.docker.internal:8080
+      NEXTAUTH_URL: http://localhost:3011
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      # Public API URL - accessible from browser (use localhost, not host.docker.internal)
       NEXT_PUBLIC_API_URL: http://localhost:8080
       SUPABASE_URL: ${SUPABASE_URL}
       SUPABASE_KEY: ${SUPABASE_KEY}
-      SUPABASE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      # SUPABASE_JWT_SECRET is only needed for MCP server, not required for frontend
+      # SUPABASE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
     networks:
       - langconnect-network
+    # Enable host.docker.internal to access host services
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
-
-volumes:
-  postgres_data:
-    driver: local
+# volumes:
+#   postgres_data:
+#     driver: local
 
 networks:
   langconnect-network:

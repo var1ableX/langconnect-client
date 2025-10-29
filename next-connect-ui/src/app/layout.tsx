@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { ThemeProvider } from "@/providers/theme-provider"
-import AuthProvider from "@/providers/auth-provider"
+import { AuthProvider } from "@/providers/auth-provider"
 import { LanguageProvider } from "@/providers/language-provider"
 import { Toaster as SonnerToaster } from "sonner"
 

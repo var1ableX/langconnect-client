@@ -11,25 +11,31 @@ build:
 	@echo "📌 Run 'make up' to start the server"
 
 up:
-	@echo "🚀 Starting LangConnect server..."
+	@echo "🚀 Starting LangConnect frontend..."
+	@echo "⚠️  Note: Connecting to existing LangConnect backend at http://localhost:8080"
 	@docker-compose up -d
-	@echo "✅ Server started successfully!"
+	@echo "✅ Frontend started successfully!"
 	@echo "📌 Access points:"
-	@echo "   - API Server: http://localhost:8080"
+	@echo "   - Next.js UI: http://localhost:3011"
+	@echo "   - Existing API: http://localhost:8080 (from your other project)"
 	@echo "   - API Docs: http://localhost:8080/docs"
-	@echo "   - Next.js UI: http://localhost:3000"
-	@echo "   - PostgreSQL: localhost:5432"
 
 down:
-	@echo "🛑 Stopping LangConnect server..."
+	@echo "🛑 Stopping LangConnect frontend..."
 	@docker-compose down
-	@echo "✅ Server stopped successfully!"
+	@echo "✅ Frontend stopped successfully!"
+
+clean:
+	@echo "🧹 Cleaning up old containers..."
+	@docker-compose down --remove-orphans
+	@docker rm -f next-connect-ui 2>/dev/null || true
+	@echo "✅ Cleanup completed!"
 
 restart:
-	@echo "🔄 Restarting LangConnect server..."
+	@echo "🔄 Restarting LangConnect frontend..."
 	@docker-compose down
 	@docker-compose up -d
-	@echo "✅ Server restarted successfully!"
+	@echo "✅ Frontend restarted successfully!"
 
 mcp:
 	@echo "🔧 Creating MCP configuration..."
