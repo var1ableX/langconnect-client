@@ -1,18 +1,23 @@
 import axios from 'axios';
-import { getAuthSession } from './auth-utils';
+import { createClient } from './supabase/server';
 
 export const API_URL = process.env.API_URL ? process.env.API_URL : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 
-// axios 인스턴스 생성
+// axios instance for server-side API calls
 const api = axios.create({
   baseURL: API_URL,
 })
 
 api.interceptors.request.use(async (config) => {
-  const session =  await getAuthSession();
-  
-  if (session?.user?.accessToken) {
-    config.headers.Authorization = `Bearer ${session.user.accessToken}`;
+  try {
+    const supabase = await createClient();
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session?.access_token) {
+      config.headers.Authorization = `Bearer ${session.access_token}`;
+    }
+  } catch (error) {
+    console.error('[axios] Error getting session:', error);
   }
   
   return config;
@@ -31,11 +36,17 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       
-      // 세션 갱신
-      const session = await getAuthSession();
-      if (session?.user?.accessToken) {
-        originalRequest.headers.Authorization = `Bearer ${session.user.accessToken}`;
-        return api(originalRequest);
+      try {
+        // Try to refresh the session
+        const supabase = await createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.access_token) {
+          originalRequest.headers.Authorization = `Bearer ${session.access_token}`;
+          return api(originalRequest);
+        }
+      } catch (refreshError) {
+        console.error('[axios] Error refreshing session:', refreshError);
       }
     }   
     

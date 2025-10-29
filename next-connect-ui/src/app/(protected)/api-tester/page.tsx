@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
+import { useAuth } from '@/providers/auth-provider'
+import { createClient } from '@/lib/supabase/client'
 import { Code, Send, Loader2, Check, X, Settings } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -108,7 +109,8 @@ const API_ENDPOINTS = {
 
 export default function APITesterPage() {
   const { t } = useTranslation()
-  const { data: session } = useSession()
+  const { user } = useAuth()
+  const supabase = createClient()
   const [selectedGroup, setSelectedGroup] = useState<string>('health')
   const [selectedEndpoint, setSelectedEndpoint] = useState<string>('')
   const [collectionId, setCollectionId] = useState('')
